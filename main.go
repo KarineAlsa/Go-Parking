@@ -10,11 +10,11 @@ import (
 
 func main() {
 	a := app.New()
-	w := a.NewWindow("Tux Revenge")
+	w := a.NewWindow("Begining")
 
 	w.CenterOnScreen()
 	w.SetFixedSize(true)
-	w.Resize(fyne.NewSize(800, 600))
+	w.Resize(fyne.NewSize(1000, 800))
 	scenes.NewGameScene(w)
 	w.ShowAndRun()
 }
