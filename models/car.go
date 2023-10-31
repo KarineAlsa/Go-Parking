@@ -11,35 +11,44 @@ import (
 
 type Car struct {
 	Parking *Parking
-	Id               int
-	skin			*canvas.Image
+	Id int
+	position int
+	image *canvas.Image
 }
 
-func CreateCar(e *Parking, s *canvas.Image) *Car {
+func CreateCar(p *Parking, c *canvas.Image) *Car {
 	return &Car{
-		Parking: e,
-		skin: s,
+		Parking: p,
+		image: c,
 	}
 }
 
-func (c *Car) Run() {
+func (s *Car) Run() {
+	s.Parking.Slots <- true
+	s.Parking.M.Lock()
+	for i := 0; i < len(s.Parking.InSlot); i++ {
+		if s.Parking.InSlot[i].Availability {
+			s.image.Move(fyne.NewPos( s.Parking.InSlot[i].X , s.Parking.InSlot[i].Y ))
+			s.image.Refresh()
+			s.position = i
+			s.Parking.InSlot[i].Availability = false
+			break
+		}
+	}
+	
+	fmt.Println("Carro ", s.Id, " Entra")
+	time.Sleep(300 *time.Millisecond)
+	s.Parking.M.Unlock()
 
-	c.Parking.Slots <- true
-	c.Parking.M.Lock()
-		x := float32( rand.Intn(650-150+1) )
-		y := float32( rand.Intn(300-50+1) )
-		c.skin.Move(fyne.NewPos( x, y ))
-		fmt.Println("Carro ", c.Id, " Entra")
-		time.Sleep(200 *time.Millisecond)
-	c.Parking.M.Unlock()
+	waiting := rand.Intn(5)
+	time.Sleep(time.Duration(waiting) * time.Second)
 
-	TiempoEsperar := rand.Intn(5-1+1) + 1
-	time.Sleep(time.Duration(TiempoEsperar) * time.Second)
-
-	c.Parking.M.Lock()
-		<- c.Parking.Slots
-		c.skin.Move(fyne.NewPos( 0,0 ))
-		fmt.Println("Carro ", c.Id, " Sale")
-		time.Sleep(200 *time.Millisecond)
-	c.Parking.M.Unlock()
+	s.Parking.M.Lock()
+	<- s.Parking.Slots
+	s.Parking.InSlot[s.position].Availability = true
+	s.image.Move(fyne.NewPos( 920, 237))
+	s.image.Refresh()
+	fmt.Println("Carro ", s.Id, " Sale")
+	time.Sleep(300 * time.Millisecond)
+	s.Parking.M.Unlock()
 }
