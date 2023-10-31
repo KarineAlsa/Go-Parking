@@ -37,7 +37,7 @@ func (s *Car) Run() {
 	time.Sleep(300 *time.Millisecond)
 	s.Parking.M.Unlock()
 
-	waiting := rand.Intn(5) 
+	waiting := rand.Intn(10) + 1
 	time.Sleep(time.Duration(waiting) * time.Second)
 
 	s.Parking.M.Lock()
@@ -47,4 +47,6 @@ func (s *Car) Run() {
 	s.image.Refresh()
 	time.Sleep(300 * time.Millisecond)
 	s.Parking.M.Unlock()
+	s.image.Move(fyne.NewPos( -500, -500))
+	s.image.Refresh()
 }
