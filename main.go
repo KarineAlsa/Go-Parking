@@ -15,6 +15,6 @@ func main() {
 	w.CenterOnScreen()
 	w.SetFixedSize(true)
 	w.Resize(fyne.NewSize(1000, 800))
-	scenes.NewGameScene(w)
+	scenes.NewParkingScene(w)
 	w.ShowAndRun()
 }

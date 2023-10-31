@@ -9,44 +9,44 @@ import (
 	"fyne.io/fyne/v2/storage"
 )
 
-type GameScene struct {
+type ParkingScene struct {
 	window fyne.Window
-	content        *fyne.Container
+	content *fyne.Container
 }
 
-func NewGameScene(window fyne.Window) *GameScene {
-	scene := &GameScene{window: window}
-    scene.Render()
+func NewParkingScene(window fyne.Window) *ParkingScene {
+	scene := &ParkingScene{window: window}
+    scene.Generate()
     return scene
 }
 
-func (s *GameScene) Render() {
+func (s *ParkingScene) Generate() {
 	backgroundImage := canvas.NewImageFromURI( storage.NewFileURI("./assets/bg.png") )
-    backgroundImage.Resize(fyne.NewSize(800,600))
+    backgroundImage.Resize(fyne.NewSize(1000,800))
 	backgroundImage.Move( fyne.NewPos(0,0) )
 
 	s.content = container.NewWithoutLayout(
-        backgroundImage, // Fondo
+        backgroundImage,
     )
     s.window.SetContent(s.content) 
-    s.StartGame()
+    s.Starting()
 }
 
-func (s *GameScene) StartGame() {
-	e := models.CreateEstacionamiento(20)
-	go Poisson.GenerateCarros(100, e)
-	go s.PintarCarros(e)
+func (s *ParkingScene) Starting() {
+	e := models.CreateParking(20)
+	go Poisson.CarsGeneration(100, e)
+	go s.CarsPosition(e)
 }
 
-func (s *GameScene) PintarCarros(e *models.Estacionamiento) {
+func (s *ParkingScene) CarsPosition(e *models.Parking) {
 	for {
-		imagen := <- e.PintarCarro
+		imagen := <- e.CarsPosition
 		s.content.Add(imagen)
         s.window.Canvas().Refresh(s.content)
 	}
 }
 
-func createPeel( fileUri string, posX float32, posY float32 ) *canvas.Image {
+func Skin( fileUri string, posX float32, posY float32 ) *canvas.Image {
 	image := canvas.NewImageFromURI(storage.NewFileURI(fileUri))
 	image.Resize(fyne.NewSize(50,50))
 	image.Move(fyne.NewPos(posX,posY))

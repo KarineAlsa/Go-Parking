@@ -10,20 +10,21 @@ import (
 	"fyne.io/fyne/v2/storage"
 )
 
-func GenerateCarros(n int, estacionamiento *models.Estacionamiento) {
-	estacionamiento.SlotsEstacionamiento <- true
-	for i := 0; i < n; i++ {
-		carroImage := canvas.NewImageFromURI( storage.NewFileURI("./assets/car.png") )
-		carroImage.Resize(fyne.NewSize(70,130))
+func CarsGeneration(cant int, parking *models.Parking) {
+	parking.Slots <- true
+	for i := 0; i < cant; i++ {
+		carImage := canvas.NewImageFromURI( storage.NewFileURI("./assets/car.png") )
+		carImage.Resize(fyne.NewSize(70,130))
 		x := rand.Intn(700-100+1) + 1
-		carroImage.Move( fyne.NewPos(float32(x), 500) )
+		carImage.Move( fyne.NewPos(float32(x), 500) )
 
-		nuevoCarro := models.CreateCarro(estacionamiento, carroImage)
-		nuevoCarro.I = i + 1
+		newCar := models.CreateCar(parking, carImage)
+		newCar.Id = i + 1
 
-		estacionamiento.PintarCarro <- carroImage
-		go nuevoCarro.RunCarro()
-		TiempoEsperar := rand.Intn(700-100+1) + 1
-		time.Sleep(time.Duration(TiempoEsperar) * time.Millisecond)
+		parking.CarsPosition <- carImage
+		go newCar.Run()
+		
+		waiting := rand.Intn(700-100+1) + 1
+		time.Sleep(time.Duration(waiting) * time.Millisecond)
 	}
 }

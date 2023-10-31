@@ -10,36 +10,36 @@ import (
 )
 
 type Car struct {
-	Estacionamiento *Estacionamiento
-	I               int
+	Parking *Parking
+	Id               int
 	skin			*canvas.Image
 }
 
-func CreateCarro(e *Estacionamiento, s *canvas.Image) *Car {
+func CreateCar(e *Parking, s *canvas.Image) *Car {
 	return &Car{
-		Estacionamiento: e,
+		Parking: e,
 		skin: s,
 	}
 }
 
-func (c *Car) RunCarro() {
+func (c *Car) Run() {
 
-	c.Estacionamiento.SlotsEstacionamiento <- true
-	c.Estacionamiento.M.Lock()
+	c.Parking.Slots <- true
+	c.Parking.M.Lock()
 		x := float32( rand.Intn(650-150+1) )
 		y := float32( rand.Intn(300-50+1) )
 		c.skin.Move(fyne.NewPos( x, y ))
-		fmt.Println("Carro ", c.I, " Entra")
+		fmt.Println("Carro ", c.Id, " Entra")
 		time.Sleep(200 *time.Millisecond)
-	c.Estacionamiento.M.Unlock()
+	c.Parking.M.Unlock()
 
 	TiempoEsperar := rand.Intn(5-1+1) + 1
 	time.Sleep(time.Duration(TiempoEsperar) * time.Second)
 
-	c.Estacionamiento.M.Lock()
-		<- c.Estacionamiento.SlotsEstacionamiento
+	c.Parking.M.Lock()
+		<- c.Parking.Slots
 		c.skin.Move(fyne.NewPos( 0,0 ))
-		fmt.Println("Carro ", c.I, " Sale")
+		fmt.Println("Carro ", c.Id, " Sale")
 		time.Sleep(200 *time.Millisecond)
-	c.Estacionamiento.M.Unlock()
+	c.Parking.M.Unlock()
 }

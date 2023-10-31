@@ -5,16 +5,15 @@ import (
 	"fyne.io/fyne/v2/canvas"
 )
 
-type Estacionamiento struct {
-	SlotsEstacionamiento chan bool
-	PintarCarro chan *canvas.Image
-
+type Parking struct {
+	Slots chan bool
+	CarsPosition chan *canvas.Image
 	M sync.Mutex
 }
 
-func CreateEstacionamiento(nS int) *Estacionamiento {
-	return &Estacionamiento{
-		SlotsEstacionamiento: make(chan bool, nS+1),
-		PintarCarro: make(chan *canvas.Image, 1),
+func CreateParking(nS int) *Parking {
+	return &Parking{
+		Slots: make(chan bool, nS+1),
+		CarsPosition: make(chan *canvas.Image, 1),
 	}
 }
