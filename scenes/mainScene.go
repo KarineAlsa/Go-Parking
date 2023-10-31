@@ -46,10 +46,4 @@ func (s *ParkingScene) CarsPosition(e *models.Parking) {
 	}
 }
 
-func Skin( fileUri string, posX float32, posY float32 ) *canvas.Image {
-	image := canvas.NewImageFromURI(storage.NewFileURI(fileUri))
-	image.Resize(fyne.NewSize(50,50))
-	image.Move(fyne.NewPos(posX,posY))
-	return image
-}
 
