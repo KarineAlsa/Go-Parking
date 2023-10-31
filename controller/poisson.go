@@ -21,9 +21,10 @@ func CarsGeneration(cant int, parking *models.Parking) {
 		newCar.Id = i 
 
 		parking.CarsPosition <- carImage
+		time.Sleep(time.Millisecond*200)
 		go newCar.Run()
 
-		waiting := rand.Intn(700-100+1) + 1
-		time.Sleep(time.Duration(waiting) * time.Millisecond)
+		
+		time.Sleep(time.Duration(rand.ExpFloat64() * float64(time.Second)))
 	}
 }

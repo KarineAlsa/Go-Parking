@@ -1,10 +1,8 @@
 package models
 
 import (
-	"fmt"
 	"math/rand"
 	"time"
-
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/canvas"
 )
@@ -36,11 +34,10 @@ func (s *Car) Run() {
 		}
 	}
 	
-	fmt.Println("Carro ", s.Id, " Entra")
 	time.Sleep(300 *time.Millisecond)
 	s.Parking.M.Unlock()
 
-	waiting := rand.Intn(5)
+	waiting := rand.Intn(5) 
 	time.Sleep(time.Duration(waiting) * time.Second)
 
 	s.Parking.M.Lock()
@@ -48,7 +45,6 @@ func (s *Car) Run() {
 	s.Parking.InSlot[s.position].Availability = true
 	s.image.Move(fyne.NewPos( 920, 237))
 	s.image.Refresh()
-	fmt.Println("Carro ", s.Id, " Sale")
 	time.Sleep(300 * time.Millisecond)
 	s.Parking.M.Unlock()
 }
