@@ -13,7 +13,7 @@ import (
 func CarsGeneration(cant int, parking *models.Parking) {
 	parking.Slots <- true
 	for i := 1; i < cant; i++ {
-		nCar:= rand.Intn(6) + 1
+		nCar:= rand.Intn(8) + 1
 		nameCar:= fmt.Sprintf("./assets/car%d.png", nCar)
 		carImage := canvas.NewImageFromURI( storage.NewFileURI(nameCar) )
 		carImage.Resize(fyne.NewSize(70,130))
