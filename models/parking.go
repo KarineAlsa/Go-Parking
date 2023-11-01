@@ -10,19 +10,22 @@ type Parking struct {
 	CarsPosition chan *canvas.Image
 	M sync.Mutex
 	InSlot []Slot
+	Gate chan bool
+	
 }
 
 type Slot struct {
 	X float32
 	Y float32
 	Availability bool
+	
 }
 
 func CreateParking(S int) *Parking {
 	return &Parking{
 		Slots: make(chan bool, S+1),
 		CarsPosition: make(chan *canvas.Image, 100),
-
+		Gate:        make(chan bool,20),
 		InSlot: []Slot{
 			{	X: 20, 
 				Y: 79, 

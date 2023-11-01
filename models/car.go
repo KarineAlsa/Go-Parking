@@ -37,6 +37,9 @@ func (s *Car) Run() {
 	time.Sleep(300 *time.Millisecond)
 	s.Parking.M.Unlock()
 
+	//en esta parte se supone que es en un rango de 5 segundos pero 
+	//se pone 10 para que el estacionamiento pueda llenarse porque con muy poco tiempo
+	//no se llena, justo abajo.
 	waiting := rand.Intn(10) + 1
 	time.Sleep(time.Duration(waiting) * time.Second)
 
